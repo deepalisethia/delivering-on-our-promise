@@ -1,0 +1,39 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+Shell <- PromiseHistoryClient
+PromiseHistoryClient <- GetPromiseHistoryByOrderIdActivity: getPromiseHistoryByOrderId(orderId: String)
+GetPromiseHistoryByOrderIdActivity <- OrderDao: get(orderId: String)
+GetPromiseHistoryByOrderIdActivity <- PromiseDao: get(customerOrderItemId: String)
+PromiseDao <- OrderManipulationAuthorityClient: getCustomerOrderItemByOrderItemId(orderItemId: String)
+PromiseDao <- OrderManipulationAuthorityClient: getCustomerOrderByOrderId(orderId: String)
+PromiseDao <- DeliveryPromiseServiceClient: getDeliveryPromiseByOrderItemId(orderItemId: String)
+OrderDao <- OrderManipulationAuthorityClient: getCustomerOrderByOrderId((orderId: String)
+DeliveryPromiseServiceClient <-- PromiseDao: Promise
+PromiseDao <-- PromiseDao: add the shipment date to the promise
+OrderManipulationAuthorityClient <-- PromiseDao: OrderResult
+OrderManipulationAuthorityClient <-- PromiseDao: OrderResultItem
+OrderManipulationAuthorityClient <-- OrderDao: OrderResult
+PromiseDao <- GetPromiseHistoryByOrderIdActivity: List<Promise>
+OrderDao <-- GetPromiseHistoryByOrderIdActivity: Order
+GetPromiseHistoryByOrderIdActivity <-- GetPromiseHistoryByOrderIdActivity: pack promises into PromiseHistory
+GetPromiseHistoryByOrderIdActivity <-- PromiseHistoryClient: PromiseHistory
+PromiseHistoryClient <-- Shell: PromiseHistory
+
+
+
+CustomerOrder <- OrderItem : Testing
+PromiseHistory <- Order: Testing
+Shell <-- App: Testing
+PromiseHistory <- ReadOnlyDao: Testing
+PromiseHistory <-- Promise: Testing
+OrderDao ..|> ReadOnlyDao: Implements
+Order o-- OrderItem: Testing
+Order <- Promise: Testing
+Order <- PromiseHistoryClient : Testing
+PromiseDao ..|> ReadOnlyDao: Implements
+
+
+
+@enduml
