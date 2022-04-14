@@ -13,38 +13,69 @@ class Shell {
     -{method}String renderFixtures()
 
     }
-Shell <- PromiseHistoryClient
-PromiseHistoryClient <- GetPromiseHistoryByOrderIdActivity: getPromiseHistoryByOrderId(orderId: String)
-GetPromiseHistoryByOrderIdActivity <- OrderDao: get(orderId: String)
-GetPromiseHistoryByOrderIdActivity <- PromiseDao: get(customerOrderItemId: String)
-PromiseDao <- OrderManipulationAuthorityClient: getCustomerOrderItemByOrderItemId(orderItemId: String)
-PromiseDao <- OrderManipulationAuthorityClient: getCustomerOrderByOrderId(orderId: String)
-PromiseDao <- DeliveryPromiseServiceClient: getDeliveryPromiseByOrderItemId(orderItemId: String)
-OrderDao <- OrderManipulationAuthorityClient: getCustomerOrderByOrderId((orderId: String)
-DeliveryPromiseServiceClient <-- PromiseDao: Promise
-PromiseDao <-- PromiseDao: add the shipment date to the promise
-OrderManipulationAuthorityClient <-- PromiseDao: OrderResult
-OrderManipulationAuthorityClient <-- PromiseDao: OrderResultItem
-OrderManipulationAuthorityClient <-- OrderDao: OrderResult
-PromiseDao <- GetPromiseHistoryByOrderIdActivity: List<Promise>
-OrderDao <-- GetPromiseHistoryByOrderIdActivity: Order
-GetPromiseHistoryByOrderIdActivity <-- GetPromiseHistoryByOrderIdActivity: pack promises into PromiseHistory
-GetPromiseHistoryByOrderIdActivity <-- PromiseHistoryClient: PromiseHistory
-PromiseHistoryClient <-- Shell: PromiseHistory
+class PromiseHistoryClient {
+    -{field} GetPromiseHistoryByOrderIdActivity getPromiseHistoryByOrderIdActivity
+    +{method}PromiseHistory getPromiseHistoryByOrderId(String orderId)
+}
 
+class GetPromiseHistoryByOrderIdActivity {
+    -{field}ReadOnlyDao<String, Order> orderDao
+    -{field}ReadOnlyDao<String, List<Primise>> "PromiseDAO"
+    +{method}PromiseHistory getPromiseHistorybyOrderId(String orderId)
+}
+class OrderDao {
+    -{field}OrderManipulationAuthorityclient omaClient
+    +{method}Order get(String orderId)
+    -{method}OrderItem convertToOrderItem(OrderResultItem orderResultItem)
+}
+class PromiseDao {
+    -{field}DeliveryPromiseServiceClient dpsClient
+    -{field}OrderManipulationAuthorityclient omaClient
+    +{method}List<Promise> get(String customerOrderItemId)
+    -{method}ZonedDateTime getDeliveryDateForOrderItem(String customerOrderItemId)
+}
+class OrderManipulationAuthorityClient {
+    -{field}OrderDatastore orderDatastore
+    +{method}OrderResult getCustomerOrderByOrderId(String orderId)
+    +{method}OrderResultItem getCustomerOrderItemByOrderItemId(String orderItemId)
+    -{method}OrderResult convertOrderDataToOrderResults(OrderData orderData)
+    -{method}OrderShipment convertOrderShipmentDataToOrderResultShipment(OrderShipmentData orderShipmentData)
+    -{method}OrderShipment.ShipmentItem convertShipmentItemDataToShipmentItem(OrderShipmentData.CustomerShipmentItemData shipmentItemData)
+    -{method}OrderResultItem convertOrderItemDataToOrderResultItem(OrderItemData orderItemData)
+}
+class DeliveryPromise\nServiceClient {
+    -{field}DeliveryPromiseService dpService
+    +{method}Promise getDeliveryPromiseByOrderItemId(String customerOrderItemId)
+}
 
+class App {
+    +{method}{static} PromiseHistoryClient getPromistHistoryClient()
+    +{method}{static}GetPromiseHistoryByOrderIdActivity getPromiseHistoryByOrderIdActivity()
+    +{method}{static}OrderDao getOrderDao()
+    +{method}{static}PromiseDao getPromiseDao()
+    +{method}{static}OrderManipulationAuthorityclient getOrderManipulationAuthorityclient()
+    +{method}{static}DeliveryPromiseServiceClient getDeliveryPromiseServiceClient()
+    +{method}{static}OrderManipulationAuthority getOrderManipulationAuthority()
+    +{method}{static}DeliveryPromiseService getDeliveryPromiseService()
+    +{method}{static}OrderDatastore getOrderDatastore()
 
-CustomerOrder <- OrderItem : Testing
-PromiseHistory <- Order: Testing
-Shell <-- App: Testing
-PromiseHistory <- ReadOnlyDao: Testing
-PromiseHistory <-- Promise: Testing
-OrderDao ..|> ReadOnlyDao: Implements
-Order o-- OrderItem: Testing
-Order <- Promise: Testing
-Order <- PromiseHistoryClient : Testing
-PromiseDao ..|> ReadOnlyDao: Implements
+}
 
+interface ReadOnlyDao {
+    {method}get(I orderId)
+}
 
+Shell --* PromiseHistoryClient
+PromiseHistoryClient *-- GetPromiseHistoryByOrderIdActivity
+GetPromiseHistoryByOrderIdActivity *-- OrderDao
+OrderDao *-- OrderManipulationAuthorityClient
+OrderDao ..|> ReadOnlyDao
+PromiseDao ..|> ReadOnlyDao
+GetPromiseHistoryByOrderIdActivity *-- PromiseDao
+PromiseDao *-- DeliveryPromiseServiceClient
+PromiseDao *-- OrderManipulationAuthorityClient
+PromiseHistory *-- Order
+PromiseHistory *-- Promise
+Order *-- OrderItem
 
 @enduml

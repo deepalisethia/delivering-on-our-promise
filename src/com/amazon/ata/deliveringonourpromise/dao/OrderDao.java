@@ -35,15 +35,17 @@ public class OrderDao implements ReadOnlyDao<String, Order> {
      */
     @Override
     public Order get(String orderId) {
+
+        if (! new OrderFieldValidator().isValidOrderId(orderId)) {
+        return null;
+    }
         OrderResult omaOrder = omaClient.getCustomerOrderByOrderId(orderId);
 
         if (null == omaOrder) {
             return null;
         }
 
-        if (! new OrderFieldValidator().isValidOrderId(orderId)) {
-            return null;
-        }
+
 
         List<OrderItem> orderItems = new ArrayList<>();
         for (OrderResultItem orderResultItem : omaOrder.getCustomerOrderItemList()) {
