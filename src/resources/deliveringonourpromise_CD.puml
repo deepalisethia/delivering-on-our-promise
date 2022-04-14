@@ -1,7 +1,18 @@
 @startuml
 'https://plantuml.com/class-diagram
 
+class Shell {
+    -{field} PromiseHistoryClient promiseHistoryClient
+    -{field} ATAUserHandler inputHandler
+    +{method}{static}void main()
+    ~{method} String handleUserRequest
+    -{method}String renderPromiseHistoryTable(PromiseHistory promiseHistory)
+    -{method}String renderOrderTable(Order order)
+    ~{method}boolean userHasAnotherRequest()
+    -{method}void processCommandLineArgs(String[] args)
+    -{method}String renderFixtures()
 
+    }
 Shell <- PromiseHistoryClient
 PromiseHistoryClient <- GetPromiseHistoryByOrderIdActivity: getPromiseHistoryByOrderId(orderId: String)
 GetPromiseHistoryByOrderIdActivity <- OrderDao: get(orderId: String)

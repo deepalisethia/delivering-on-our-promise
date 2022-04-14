@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -40,6 +39,19 @@ public class GetPromiseHistoryByOrderIdActivityTest {
         // WHEN + THEN
         // (participants: we'll learn what this is doing later in the course)
         assertThrows(IllegalArgumentException.class, () -> activity.getPromiseHistoryByOrderId(orderId));
+    }
+
+    @Test
+    public void getPromiseHistoryByOrderId_invalidOrderId_throwsIllegalArgumentException() {
+        //GIVEN
+        String orderId = "invalid";
+
+        //WHEN
+        PromiseHistory history = activity.getPromiseHistoryByOrderId(orderId);
+
+        // THEN
+        assertNull(history.getOrder(), "Expected to be null");
+        assertEquals(0, history.getPromises().size(), "Expected empty list");
     }
 
     @Test
