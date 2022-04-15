@@ -38,14 +38,14 @@ Happy case, verifying that the OrderDao can return an order.
 1. We call `get()` with that order ID
 
 ### Then
-* The result is not nullss
+* The result is not null
 
 
 ### get_forUnknownOrderId_returnsOrder
-Unhappy case, verifying that the OrderDao can return a null if an unknown order ID is provided
+Alternate case, verifying that the OrderDao can return an exception if the orderID is invalid.
 
 #### Given
-* An order ID that we know doesn't exist
+* An order ID that we know does not exist
 
 #### When
 1. We call `get()` with that order ID
