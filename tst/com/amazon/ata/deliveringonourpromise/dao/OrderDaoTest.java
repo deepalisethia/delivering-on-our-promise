@@ -34,17 +34,4 @@ public class OrderDaoTest {
         assertNull(order);
     }
 
-//    @Test
-//    public void get_forNullOrderId_returnsOrder() {
-//        // GIVEN
-//        String orderId = null;
-//        dao = new OrderDao(orderId);
-//        // WHEN
-//        Order order = dao.get(orderId);
-//        // THEN
-//        if (order == null) {
-//            assertNull(order, "Null Order ID");
-//        }
-//
-//    }
 }
