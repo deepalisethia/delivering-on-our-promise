@@ -11,6 +11,7 @@ public class OrderFulfillmentServiceClient implements PromiseClient {
         this.ofService = ofService;
     }
 
+    @Override
     public Promise getPromise(String customerOrderItemId) {
         OrderPromise getOrderPromise = ofService.getOrderPromise(customerOrderItemId);
 
@@ -29,5 +30,6 @@ public class OrderFulfillmentServiceClient implements PromiseClient {
                 .build();
 
     }
+
 
 }

@@ -21,6 +21,7 @@ import java.util.List;
 public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
     private OrderManipulationAuthorityClient omaClient;
     private List <PromiseClient> promiseClientList;
+    private Promise promiseAsin;
 
     /**
      * PromiseDao constructor, accepting service clients for DPS and OMA.

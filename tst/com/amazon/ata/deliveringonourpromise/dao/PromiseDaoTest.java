@@ -25,7 +25,6 @@ public class PromiseDaoTest {
 
     private OrderManipulationAuthorityClient omaClient = App.getOrderManipulationAuthorityClient();
     private DeliveryPromiseServiceClient dpsClient = App.getDeliveryPromiseServiceClient();
-    private OrderFulfillmentServiceClient ofsClient = App.getPromise();
     private List<PromiseClient> promiseClientList = new ArrayList<>();
 
     // undelivered
@@ -39,9 +38,6 @@ public class PromiseDaoTest {
     private Promise deliveredDeliveryPromise;
     private ZonedDateTime deliveredDeliveryDate;
 
-    // ordered
-    private String orderedOrderId;
-    private Promise orderedOrderPromise;
 
 
     // participants: @BeforeEach means this method is run before each test method is executed, often setting up data +
@@ -51,7 +47,7 @@ public class PromiseDaoTest {
         // order fixtures: these are specific known test orders.
         shippedOrderId = "900-3746401-0000002";
         deliveredOrderId = "900-3746401-0000003";
-        orderedOrderId = "900-3746401-0000002";
+
 
         // We're doing this (not isolating the DAO from dependencies) because we haven't covered mocking yet
         // Note that this logic depends on the above orders being single-item orders
@@ -60,22 +56,21 @@ public class PromiseDaoTest {
                                  .getCustomerOrderItemList()
                                  .get(0)
                                  .getCustomerOrderItemId();
-        shippedDeliveryPromise = dpsClient.getDeliveryPromiseByOrderItemId(shippedOrderItemId);
+        shippedDeliveryPromise = dpsClient.getPromise(shippedOrderItemId);
 
         deliveredOrderItemId = omaClient
                                    .getCustomerOrderByOrderId(deliveredOrderId)
                                    .getCustomerOrderItemList()
                                    .get(0)
                                    .getCustomerOrderItemId();
-        deliveredDeliveryPromise = dpsClient.getDeliveryPromiseByOrderItemId(deliveredOrderItemId);
+        deliveredDeliveryPromise = dpsClient.getPromise(deliveredOrderItemId);
         deliveredDeliveryDate = omaClient
                                     .getCustomerOrderByOrderId(deliveredOrderId)
                                     .getOrderShipmentList().get(0)
                                     .getDeliveryDate();
-        orderedOrderPromise = ofsClient.getPromise(orderedOrderId);
+
 
         promiseClientList.add(dpsClient);
-        promiseClientList.add(ofsClient);
         dao = new PromiseDao(promiseClientList, omaClient);
     }
 
