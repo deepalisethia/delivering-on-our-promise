@@ -30,6 +30,7 @@ public class DeliveryPromiseServiceClient {
 
         if (null == deliveryPromise) {
             return null;
+
         }
 
         return Promise.builder()
