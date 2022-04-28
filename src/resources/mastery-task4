@@ -1,0 +1,44 @@
+PromiseDao currently works only with DPS (Delivery Promise Service)
+
+We need to get promises from OFS (Order Fulfillment Service)
+
+
+
+Use Cases
+
+What ways will the CS reps use the new multiple client PromiseDao?
+Only supports one resource DPS
+
+
+How does PromiseDao work right now?
+
+
+
+Create a diagram to understand how Promise Dao works.
+
+
+Proposed Solution
+How will my changes satisfy my use cases above?
+
+How will I enable getting promises from OFS?
+
+How will I allow new promise sources to be added easily in the future?
+
+Out of Scope
+Consider a reviewer who misunderstands this design and believes you're not going to make PromiseDao perfect.
+What am I not going to do?
+
+Details
+Make a UML diagram to clarify the changes I want to make.
+Can leave out classes that don't participate in the new solution, but leave in anything using updates.
+Include a link to te plantUML source.
+
+What calls will the software make,
+How will it process the results,
+Satisfy all use cases.
+
+What do we expect the complexity of this solution to be and why?
+Define variables you're using in BigO
+
+Potential Issues
+What would surprise a customer service rep?

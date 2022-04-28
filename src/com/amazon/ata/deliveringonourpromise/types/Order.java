@@ -71,11 +71,11 @@ public class Order {
      * @return a list containing all of the order items in this order
      */
     public List<OrderItem> getCustomerOrderItemList() {
-        List <OrderItem> OrderItemTest = new ArrayList<>();
+        List <OrderItem> orderItemCopy = new ArrayList<>();
         for(int i = 0; i < customerOrderItemList.size(); i++) {
-            OrderItemTest.add(customerOrderItemList.get(i));
+            orderItemCopy.add(customerOrderItemList.get(i));
         }
-        return OrderItemTest;
+        return orderItemCopy;
     }
 
     public String getShipOption() {

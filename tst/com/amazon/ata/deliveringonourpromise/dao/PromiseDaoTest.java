@@ -1,14 +1,17 @@
 package com.amazon.ata.deliveringonourpromise.dao;
 
 import com.amazon.ata.deliveringonourpromise.App;
+import com.amazon.ata.deliveringonourpromise.orderfulfillmentservice.OrderFulfillmentServiceClient;
 import com.amazon.ata.deliveringonourpromise.deliverypromiseservice.DeliveryPromiseServiceClient;
 import com.amazon.ata.deliveringonourpromise.ordermanipulationauthority.OrderManipulationAuthorityClient;
 import com.amazon.ata.deliveringonourpromise.types.Promise;
 
+import com.amazon.ata.deliveringonourpromise.types.PromiseClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,6 +25,8 @@ public class PromiseDaoTest {
 
     private OrderManipulationAuthorityClient omaClient = App.getOrderManipulationAuthorityClient();
     private DeliveryPromiseServiceClient dpsClient = App.getDeliveryPromiseServiceClient();
+    private OrderFulfillmentServiceClient ofsClient = App.getPromise();
+    private List<PromiseClient> promiseClientList = new ArrayList<>();
 
     // undelivered
     private String shippedOrderId;
@@ -34,6 +39,11 @@ public class PromiseDaoTest {
     private Promise deliveredDeliveryPromise;
     private ZonedDateTime deliveredDeliveryDate;
 
+    // ordered
+    private String orderedOrderId;
+    private Promise orderedOrderPromise;
+
+
     // participants: @BeforeEach means this method is run before each test method is executed, often setting up data +
     // an instance of the class under test.
     @BeforeEach
@@ -41,6 +51,7 @@ public class PromiseDaoTest {
         // order fixtures: these are specific known test orders.
         shippedOrderId = "900-3746401-0000002";
         deliveredOrderId = "900-3746401-0000003";
+        orderedOrderId = "900-3746401-0000002";
 
         // We're doing this (not isolating the DAO from dependencies) because we haven't covered mocking yet
         // Note that this logic depends on the above orders being single-item orders
@@ -61,8 +72,11 @@ public class PromiseDaoTest {
                                     .getCustomerOrderByOrderId(deliveredOrderId)
                                     .getOrderShipmentList().get(0)
                                     .getDeliveryDate();
+        orderedOrderPromise = ofsClient.getPromise(orderedOrderId);
 
-        dao = new PromiseDao(dpsClient, omaClient);
+        promiseClientList.add(dpsClient);
+        promiseClientList.add(ofsClient);
+        dao = new PromiseDao(promiseClientList, omaClient);
     }
 
     @Test
