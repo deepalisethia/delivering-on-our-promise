@@ -31,7 +31,6 @@ public class App {
     public static PromiseHistoryClient getPromiseHistoryClient() {
         return new PromiseHistoryClient(getPromiseHistoryByOrderIdActivity());
     }
-
     /* helpers */
 
     public static GetPromiseHistoryByOrderIdActivity getPromiseHistoryByOrderIdActivity() {
