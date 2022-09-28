@@ -53,6 +53,7 @@ public class GetPromiseHistoryByOrderIdActivity {
 
         List<Promise> promises = new ArrayList<>();
         if (customerOrderItems != null && !customerOrderItems.isEmpty()) {
+
             for (int i = 0; i < customerOrderItems.size(); i++) {
                 customerOrderItem = customerOrderItems.get(i);
                 ArrayList<Promise> test = new ArrayList<>();

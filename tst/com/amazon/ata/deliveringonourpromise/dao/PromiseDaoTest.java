@@ -68,8 +68,6 @@ public class PromiseDaoTest {
                                     .getCustomerOrderByOrderId(deliveredOrderId)
                                     .getOrderShipmentList().get(0)
                                     .getDeliveryDate();
-
-
         promiseClientList.add(dpsClient);
         dao = new PromiseDao(promiseClientList, omaClient);
     }
