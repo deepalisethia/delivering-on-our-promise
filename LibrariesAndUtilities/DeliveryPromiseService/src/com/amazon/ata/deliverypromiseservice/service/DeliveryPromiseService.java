@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 /**
  * Mocks DeliveryPromiseService, returning Delivery Promises for customer order item IDs.
  */
-public class DeliveryPromiseService {
+public class DeliveryPromiseService{
     private static final String CUSTOMER_ORDER_ID_PATTERN = "-?\\d+(\\.\\d+)?";
 
     private OrderDatastore orderDatastore;

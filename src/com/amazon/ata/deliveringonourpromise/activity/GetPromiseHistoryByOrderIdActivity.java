@@ -1,11 +1,14 @@
 package com.amazon.ata.deliveringonourpromise.activity;
 
+import com.amazon.ata.deliveringonourpromise.comparators.PromiseAsinComparator;
 import com.amazon.ata.deliveringonourpromise.dao.ReadOnlyDao;
 import com.amazon.ata.deliveringonourpromise.types.Order;
 import com.amazon.ata.deliveringonourpromise.types.OrderItem;
 import com.amazon.ata.deliveringonourpromise.types.Promise;
 import com.amazon.ata.deliveringonourpromise.types.PromiseHistory;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,17 +48,27 @@ public class GetPromiseHistoryByOrderIdActivity {
             return new PromiseHistory(null);
         }
 
-        List<OrderItem> customerOrderItems = order.getCustomerOrderItemList(); //FIX
+        List<OrderItem> customerOrderItems = order.getCustomerOrderItemList();
         OrderItem customerOrderItem = null;
+
+        List<Promise> promises = new ArrayList<>();
         if (customerOrderItems != null && !customerOrderItems.isEmpty()) {
-            customerOrderItem = customerOrderItems.get(0);
+
+            for (int i = 0; i < customerOrderItems.size(); i++) {
+                customerOrderItem = customerOrderItems.get(i);
+                ArrayList<Promise> test = new ArrayList<>();
+                for (Promise promise: promiseDao.get(customerOrderItem.getCustomerOrderItemId())) {
+                    promise.setConfidence(customerOrderItem.isConfidenceTracked(), customerOrderItem.getConfidence());
+                    test.add(promise);
+                }
+                promises.addAll(test);
+            }
+            Collections.sort(promises, new PromiseAsinComparator());
         }
 
         PromiseHistory history = new PromiseHistory(order);
         if (customerOrderItem != null) {
-            List<Promise> promises = promiseDao.get(customerOrderItem.getCustomerOrderItemId());
             for (Promise promise : promises) {
-                promise.setConfidence(customerOrderItem.isConfidenceTracked(), customerOrderItem.getConfidence());
                 history.addPromise(promise);
             }
         }

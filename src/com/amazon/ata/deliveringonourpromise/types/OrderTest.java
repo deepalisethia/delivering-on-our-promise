@@ -1,5 +1,4 @@
 package com.amazon.ata.deliveringonourpromise.types;
-import com.amazon.ata.ordermanipulationauthority.OrderCondition;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
